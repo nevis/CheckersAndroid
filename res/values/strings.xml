@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="serverName">Server name</string>
+    <string name="app_name">Checkers</string>
+    <string name="clientName">Client name</string>
+    <string name="connection">Connection</string>
+    <string name="localhost">10.0.2.2</string>
+    <string name="players">Players</string>
+    <string name="inv">Invite</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="youturn">You turn</string>
+    <string name="enemyturn">Enemy turn</string>
+
+</resources>
