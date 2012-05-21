@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,9 +36,9 @@ public class CheckersActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
 				if (Model.getInstance().getCheckers().getTurn()) {
-					Log.d(Model.LOG, "row=" + position/8 + ", column=" + position%8);
 					Model.getInstance().getCheckers().clientTurn((int)position/8, (int)position%8);
-		            if (!Model.getInstance().getCheckers().getTurn()) turn.setText(R.string.enemyturn);
+					Model.getInstance().getCheckers().notifyDataSetChanged();
+					if (!Model.getInstance().getCheckers().getTurn()) turn.setText(R.string.enemyturn);
 		        }
 			}
 		});

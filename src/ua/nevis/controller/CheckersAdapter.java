@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 public class CheckersAdapter extends BaseAdapter {
-	//private LayoutInflater inflater;
 	private int checkersField [] [] = new int[8][8];
     private int chip, enemyChip;
     private boolean turn = false;
@@ -38,20 +37,51 @@ public class CheckersAdapter extends BaseAdapter {
 		if (view == null) {
 			view = new ImageView(Model.getInstance().getClientCommand().getContext());
 		}
-		int value = checkersField[(int)position/8][(int)position%8];
-		if (value == 1) {
+		switch(checkersField[(int)position/8][(int)position%8]) {
+		case 1: {
 			((ImageView) view).setImageResource(R.drawable.white11);
-        } else if (value == 2) {
-        	((ImageView) view).setImageResource(R.drawable.black11);
-        } else if (value == 11) {
-        	((ImageView) view).setImageResource(R.drawable.white21);
-        } else if (value == 21) {
-        	((ImageView) view).setImageResource(R.drawable.black21);
-        } else if (value == 0) {
-        	((ImageView) view).setImageResource(R.drawable.blackcell1);
-        } else if (value == -1) {
-        	((ImageView) view).setImageResource(R.drawable.whitecell1);
-        }
+			break;
+		}
+		case 2: {
+			((ImageView) view).setImageResource(R.drawable.black11);
+			break;
+		}
+		case 11: {
+			((ImageView) view).setImageResource(R.drawable.white21);
+			break;
+		}
+		case 22: {
+			((ImageView) view).setImageResource(R.drawable.black21);
+			break;
+		}
+		case 0: {
+			((ImageView) view).setImageResource(R.drawable.blackcell1);
+			break;
+		}
+		case -1: {
+			((ImageView) view).setImageResource(R.drawable.whitecell1);
+			break;
+		}
+		case 101: {
+			((ImageView) view).setImageResource(R.drawable.white11_1);
+			break;
+		}
+		case 102: {
+			((ImageView) view).setImageResource(R.drawable.black11_1);
+			break;
+		}
+		case 111: {
+			((ImageView) view).setImageResource(R.drawable.white21_1);
+			break;
+		}
+		case 122: {
+			((ImageView) view).setImageResource(R.drawable.black21_1);
+			break;
+		}
+		default: {
+			break;
+		}
+		}
 		return view;
 	}
     public void refreshCheckersBoard() {
@@ -101,13 +131,15 @@ public class CheckersAdapter extends BaseAdapter {
         if (!firstTurn) {
             firstTurn = isSelected(row, column);
         } else {
-            if (noMulti && (!checkToKillAll()) && (turn(row, column))) {
+        	if (checkersField[firstRow][firstColumn] >= 100) checkersField[firstRow][firstColumn] -= 100;
+        	if (noMulti && !checkToKillAll() && turn(row, column)) {
                 setChips(row, column);
                 model.getClient().sendMessage("@turn;" + firstRow + ";" + firstColumn + ";"
                         + row + ";" + column + ";" + checkersField[row][column] + ";");
                 firstTurn = false;
-                notifyDataSetChanged();
                 turn = false;
+            } else if (noMulti && (checkersField[row][column] == chip || checkersField[row][column] == chip*10+1)) {
+            	firstTurn = isSelected(row, column);
             } else if (killTurn(row, column)){
                 if (checkersField[firstRow][firstColumn] == chip) {
                     row = firstRow + 2 * killRow;
@@ -122,7 +154,7 @@ public class CheckersAdapter extends BaseAdapter {
                     noMulti = false;
                     firstRow = row;
                     firstColumn = column;
-                    notifyDataSetChanged();
+                    checkersField[firstRow][firstColumn] += 100;
                     turn = true;
                 } else {
                     model.getClient().sendMessage("@kill;" + firstRow + ";" + firstColumn + ";"
@@ -130,11 +162,8 @@ public class CheckersAdapter extends BaseAdapter {
                             + checkersField[row][column] + ";");
                     noMulti = true;
                     firstTurn = false;
-                    notifyDataSetChanged();
                     turn = false;
                 }
-            }  else if (noMulti) {
-                if (!isSelected(row, column)) firstTurn = false;
             }
         }
     }
@@ -146,8 +175,10 @@ public class CheckersAdapter extends BaseAdapter {
     }
     private boolean isSelected(int row, int column) {
         if ((checkersField[row][column] == chip) || (checkersField[row][column] == chip*10 + 1)) {
-            firstRow = row;
+        	if (checkersField[firstRow][firstColumn] >= 100) checkersField[firstRow][firstColumn] -= 100;
+        	firstRow = row;
             firstColumn = column;
+            checkersField[firstRow][firstColumn] += 100;
             return true;
         } else
             return false;
