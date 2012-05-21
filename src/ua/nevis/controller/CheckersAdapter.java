@@ -10,8 +10,7 @@ import android.widget.ImageView;
 public class CheckersAdapter extends BaseAdapter {
 	//private LayoutInflater inflater;
 	private int checkersField [] [] = new int[8][8];
-    private int chip;
-    private int enemyChip;
+    private int chip, enemyChip;
     private boolean turn = false;
     private int firstRow, firstColumn, killRow, killColumn;
     private boolean firstTurn = false;

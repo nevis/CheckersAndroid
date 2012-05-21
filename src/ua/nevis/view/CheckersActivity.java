@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class CheckersActivity extends Activity {
@@ -29,6 +30,8 @@ public class CheckersActivity extends Activity {
 		turn = (TextView) findViewById(R.id.turn);
 		setTurnState();
 		checkersView = (GridView) findViewById(R.id.checkersView);
+		checkersView.setLayoutParams(new LinearLayout.LayoutParams(getWindowManager().getDefaultDisplay().getWidth(),
+				getWindowManager().getDefaultDisplay().getWidth()));
 		checkersView.setAdapter(Model.getInstance().getCheckers());
 		checkersView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
